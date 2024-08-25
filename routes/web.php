@@ -136,7 +136,7 @@ Route::get('/terms', function () {
 //admin
 
 
-Route::prefix('admin')->middleware('auth:admin')->group(function () {
+Route::prefix('admin')->middleware(['auth:admin', 'permission'])->group(function () {
 
     Route::get('students',[AdminController::class,'studentlist'])->name('admin.students');
     Route::get('students/{id}', [AdminController::class, 'editStudent'])->name('admin.students.edit');

@@ -6,14 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Selected_role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response;
+use App\Models\Permission;
 
 class SelecteduserController extends Controller
 {
     // Show the list of roles
     public function rolelist()
     {
+        abort_if(Gate::denies('role_list_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $roles = Selected_role::all();
+
         return view('admin.roles', compact('roles')); // Adjust view path as needed
     }
 

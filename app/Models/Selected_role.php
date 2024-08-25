@@ -19,4 +19,9 @@ class Selected_role extends Model
     {
         return $this->hasMany(Admin::class);
     }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
 }
