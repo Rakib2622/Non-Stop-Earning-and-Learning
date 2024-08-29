@@ -51,6 +51,23 @@
                                 @enderror
                             </div>
 
+                            <!-- Permissions Checkboxes -->
+                            <div class="mb-3">
+                                <label class="form-label">Permissions</label>
+                                <div class="row">
+                                    @foreach($permissions as $permission)
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}" id="permission_{{ $permission->id }}">
+                                                <label class="form-check-label" for="permission_{{ $permission->id }}">
+                                                    {{ $permission->title }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+
                             <button type="submit" class="btn btn-primary">Save Role</button>
                             <a href="{{ route('admin.roles') }}" class="btn btn-secondary">Cancel</a>
                         </form>

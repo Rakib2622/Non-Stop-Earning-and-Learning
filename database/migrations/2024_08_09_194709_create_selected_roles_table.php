@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('selected_roles', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            // $table->enum('status', ['manager', 'trainer', 'seller']);
             $table->string('status');
             $table->string('amount');
             $table->timestamps();

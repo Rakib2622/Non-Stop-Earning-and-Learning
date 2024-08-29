@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
     // Display a listing of the products
     public function productlist()
     {
+        abort_if(Gate::denies('product read'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $products = Product::all();
         return view('admin.products.index', compact('products'));
     }
@@ -21,11 +24,13 @@ class ProductController extends Controller
     // Show the form for creating a new product
     public function insert_product_page()
 {
+    abort_if(Gate::denies('product write'), Response::HTTP_FORBIDDEN, '403 Forbidden');   
     return view('admin.products.addproduct');
 }
 
 public function show_product_details($id)
 {
+    abort_if(Gate::denies('product read'), Response::HTTP_FORBIDDEN, '403 Forbidden');
     $product = Product::findOrFail($id);
     return view('admin.products.details', compact('product'));
 }
@@ -64,6 +69,7 @@ public function show_product_details($id)
     // Show the form for editing the specified product
     public function edit_product_page($id)
     {
+        abort_if(Gate::denies('product write'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $product = Product::findOrFail($id);
         return view('admin.products.edit', compact('product'));
     }
@@ -119,6 +125,7 @@ public function show_product_details($id)
 
     public function order()
     {
+        abort_if(Gate::denies('order read'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $orders = Order::with('product')->orderBy('created_at', 'desc')->get();
         return view('admin.products.orders', compact('orders'));
     }

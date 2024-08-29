@@ -5,17 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\ClassModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class CourseController extends Controller
 {
     public function index()
     {
+        
         $courses = Course::all();
         return view('frontend.after_login.dashboard', compact('courses'));
     }
     // Courses List
     public function courselist()
     {
+        abort_if(Gate::denies('course read'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $courses = Course::all();
         return view('admin.courses.index', compact('courses'));
     }
@@ -23,6 +27,7 @@ class CourseController extends Controller
     // Insert Course Page
     public function insert_course_page()
     {
+        abort_if(Gate::denies('course write'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('admin.courses.create');
     }
 
@@ -36,6 +41,7 @@ class CourseController extends Controller
     // Edit Course Page
     public function edit_course_page($id)
     {
+        abort_if(Gate::denies('course write'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $course = Course::findOrFail($id);
         return view('admin.courses.edit', compact('course'));
     }
@@ -59,6 +65,7 @@ class CourseController extends Controller
     // Classes List
     public function classlist($course_id)
     {
+        abort_if(Gate::denies('course read'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $course = Course::findOrFail($course_id);
         $classes = $course->classes;
         return view('admin.classes.index', compact('course', 'classes'));
@@ -67,6 +74,7 @@ class CourseController extends Controller
     // Insert Class Page
     public function insert_class_page($course_id)
     {
+        abort_if(Gate::denies('course write'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $course = Course::findOrFail($course_id);
         return view('admin.classes.create', compact('course'));
     }
@@ -83,6 +91,7 @@ class CourseController extends Controller
     // Edit Class Page
     public function edit_class_page($course_id, $class_id)
     {
+        abort_if(Gate::denies('course write'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $course = Course::findOrFail($course_id);
         $class = ClassModel::findOrFail($class_id);
         return view('admin.classes.edit', compact('course', 'class'));

@@ -6,6 +6,7 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -43,5 +44,42 @@ class ProfileController extends Controller
 
     return Redirect::route('showprofile')->with('status', 'profile-updated');
 }
-    
+
+public function adminshowProfile()
+    {
+        $admin = Auth::guard('admin')->user();
+        return view('admin.profile.show', compact('admin'));
+    }
+
+    // Edit the admin profile
+    public function adminedit()
+    {
+        $admin = Auth::guard('admin')->user();
+        return view('admin.profile.edit', compact('admin'));
+    }
+
+    // Update the admin profile
+    public function adminupdateProfile(Request $request)
+    {
+        $request->validate([
+            'name' => 'nullable|string|max:255',
+            'email' => 'required|string|email|max:255|unique:admins,email,' . Auth::id(),
+            'whatsapp' => 'nullable|string|max:20',
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        $admin = Auth::guard('admin')->user();
+        $admin->name = $request->input('name');
+        $admin->email = $request->input('email');
+        $admin->whatsapp = $request->input('whatsapp');
+
+        if ($request->filled('password')) {
+            $admin->password = Hash::make($request->input('password'));
+        }
+
+        $admin->save();
+
+        return redirect()->route('admin.showprofile')->with('success', 'Profile updated successfully.');
+    }
 }
+    

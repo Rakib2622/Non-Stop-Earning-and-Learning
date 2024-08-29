@@ -15,65 +15,95 @@ class SelecteduserController extends Controller
 {
     // Show the list of roles
     public function rolelist()
-    {
-        abort_if(Gate::denies('role_list_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $roles = Selected_role::all();
+{
+    abort_if(Gate::denies('role read'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    $roles = Selected_role::all();
 
-        return view('admin.roles', compact('roles')); // Adjust view path as needed
-    }
+    return view('admin.roles', compact('roles'));
+}
 
     // Show the form to insert a new role
     public function insertpage()
     {
-        return view('admin.create_roles'); // Adjust view path as needed
+        abort_if(Gate::denies('role write'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $permissions = Permission::all();
+        return view('admin.create_roles', compact('permissions')); // Adjust view path as needed
     }
 
     // Handle the insertion of a new role
     public function insert(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'status' => 'required|boolean',
-            'amount' => 'required|numeric|min:0',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'status' => 'required|boolean',
+        'amount' => 'required|numeric|min:0',
+        'permissions' => 'nullable|array', // Validate permissions as an array
+        'permissions.*' => 'exists:permissions,id', // Ensure each permission exists in the permissions table
+    ]);
 
-        Selected_role::create([
-            'name' => $request->input('name'),
-            'status' => $request->input('status'),
-            'amount' => $request->input('amount'),
-        ]);
+    // Create the role
+    $selectedRole = Selected_role::create([
+        'name' => $request->input('name'),
+        'status' => $request->input('status'),
+        'amount' => $request->input('amount'),
+    ]);
 
-        return redirect()->route('admin.roles')->with('success', 'Role added successfully.');
+    // Attach permissions to the role
+    if ($request->has('permissions')) {
+        $selectedRole->permissions()->attach($request->input('permissions'));
     }
+
+    return redirect()->route('admin.roles')->with('success', 'Role added successfully.');
+}
+
 
     // Show the form to edit an existing role
     public function edit_role_page($id)
-    {
-        $role = Selected_role::findOrFail($id);
-        return view('admin.update_roles', compact('role')); // Adjust view path as needed
+{
+    abort_if(Gate::denies('role write'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+    // Fetch the role and its permissions
+    $role = Selected_role::findOrFail($id);
+    $permissions = Permission::all();
+    $rolePermissions = $role->permissions->pluck('id')->toArray(); // Get the role's current permissions
+
+    return view('admin.update_roles', compact('role', 'permissions', 'rolePermissions')); // Adjust view path as needed
+}
+
+// Handle the update of an existing role
+public function update_role_page(Request $request, $id)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'status' => 'required|boolean',
+        'amount' => 'required|numeric|min:0',
+        'permissions' => 'nullable|array', // Validate permissions as an array
+        'permissions.*' => 'exists:permissions,id', // Ensure each permission exists in the permissions table
+    ]);
+
+    $role = Selected_role::findOrFail($id);
+
+    // Update the role
+    $role->update([
+        'name' => $request->input('name'),
+        'status' => $request->input('status'),
+        'amount' => $request->input('amount'),
+    ]);
+
+    // Sync the permissions (update pivot table)
+    if ($request->has('permissions')) {
+        $role->permissions()->sync($request->input('permissions'));
+    } else {
+        // If no permissions are selected, detach all permissions
+        $role->permissions()->detach();
     }
 
-    // Handle the update of an existing role
-    public function update_role_page(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'status' => 'required|boolean',
-            'amount' => 'required|numeric|min:0',
-        ]);
-
-        $role = Selected_role::findOrFail($id);
-        $role->update([
-            'name' => $request->input('name'),
-            'status' => $request->input('status'),
-            'amount' => $request->input('amount'),
-        ]);
-
-        return redirect()->route('admin.roles')->with('success', 'Role updated successfully.');
-    }
+    return redirect()->route('admin.roles')->with('success', 'Role updated successfully.');
+}
 
     public function delete($id)
     {
+        
         $role = Selected_role::findOrFail($id);
         $role->delete();
 
@@ -84,14 +114,17 @@ class SelecteduserController extends Controller
     //user
 
     public function adminlist()
-    {
-        $admins = Admin::with('selected_role')->get(); // Fetch all admins with their roles
-        return view('admin.userlist', compact('admins'));
-    }
+{
+    abort_if(Gate::denies('user read'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    $admins = Admin::with('selected_role')->get();
+
+    return view('admin.userlist', compact('admins'));
+}
 
     // Show the form for creating a new admin
     public function admininsertpage()
     {
+        abort_if(Gate::denies('user write'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $roles = Selected_role::all(); // Fetch all available roles
         return view('admin.createuser', compact('roles'));
     }
@@ -102,7 +135,7 @@ class SelecteduserController extends Controller
     $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|email|unique:admins,email',
-        'whatsapp' => 'nullable|string|max:15',
+        'whatsapp' => 'nullable|string|max:255',
         'selected_role_id' => 'required|exists:selected_roles,id',
         'password' => 'required|confirmed|min:8',
     ]);
@@ -122,6 +155,8 @@ class SelecteduserController extends Controller
     // Show the form for editing an existing admin
     public function edit_admin_page($id)
     {
+        abort_if(Gate::denies('user write'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+       
         $admin = Admin::findOrFail($id);
         $roles = Selected_role::all(); // Fetch all available roles
         return view('admin.edituser', compact('admin', 'roles'));
@@ -154,6 +189,7 @@ class SelecteduserController extends Controller
     // Delete an admin
     public function admindelete($id)
     {
+
         $admin = Admin::findOrFail($id);
         $admin->delete();
 

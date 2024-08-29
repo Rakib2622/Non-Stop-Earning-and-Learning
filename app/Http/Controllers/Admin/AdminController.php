@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller
 {
@@ -15,6 +17,7 @@ class AdminController extends Controller
 
     public function studentlist()
 {
+    abort_if(Gate::denies('student read'), Response::HTTP_FORBIDDEN, '403 Forbidden');
     // Fetch all registered users
     $students = User::all();
 
@@ -22,6 +25,7 @@ class AdminController extends Controller
 }
 public function editStudent($id)
 {
+    abort_if(Gate::denies('student write'), Response::HTTP_FORBIDDEN, '403 Forbidden');
     $student = User::findOrFail($id);
     return view('admin.editstudent', ['student' => $student]);
 }
@@ -78,7 +82,5 @@ public function editStudent($id)
     // Redirect back with a success message
     return redirect()->route('admin.students')->with('success', 'Student updated successfully!');
 }
-
-
 
 }
