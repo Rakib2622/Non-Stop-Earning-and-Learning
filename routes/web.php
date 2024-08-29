@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 
+
 Route::get('/inactive_dashboard', function () {
     return view('frontend.after_login.inactive_dashboard');
 })->middleware(['auth','verified'])->name('inactive_dashboard');

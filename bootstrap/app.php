@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Middleware\AuthGate;
 use App\Http\Middleware\CheckUserStatus;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Application;
@@ -15,17 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'is_active' => CheckUserStatus::class
+            'is_active' => CheckUserStatus::class,
+            'role' => RoleMiddleware::class,
         ]);
-
-        $middleware->alias([
-            'permission' => AuthGate::class
-        ]);
-
-        $middleware->alias([
-            'role' => RoleMiddleware::class
-        ]);
-
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
