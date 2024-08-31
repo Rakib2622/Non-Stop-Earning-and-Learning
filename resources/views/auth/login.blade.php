@@ -12,6 +12,7 @@
         .login-container {
             display: flex;
             height: 100vh;
+            flex-wrap: wrap;
         }
         .login-form {
             flex: 1;
@@ -59,6 +60,15 @@
         }
         .forgot-password:hover {
             color: #333;
+        }
+        /* Media query for small devices */
+        @media (max-width: 768px) {
+            .login-image {
+                display: none;
+            }
+            .login-container {
+                flex-direction: column;
+            }
         }
     </style>
 </head>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\SelecteduserController;
 use App\Http\Controllers\CourseController;
@@ -35,6 +36,12 @@ Route::middleware(['auth', 'is_active'])->group(function () {
     Route::get('courses', [CourseController::class, 'userCourseList'])->name('user.courses');
     Route::get('courses/{id}', [CourseController::class, 'userCourseDetails'])->name('user.course.details');
     Route::get('courses/{course_id}/classes', [CourseController::class, 'userClassList'])->name('user.classes');
+
+
+    Route::post('account/income', [AccountController::class, 'income'])->name('account.income');
+    Route::post('account/deposit', [AccountController::class, 'deposit'])->name('account.deposit');
+    Route::get('user/withdrawal', [AccountController::class, 'withdrawalForm'])->name('user.withdrawal.form');
+    Route::post('user/withdrawal', [AccountController::class, 'processWithdrawal'])->name('user.withdrawal.process');
 
 
 
@@ -73,9 +80,7 @@ Route::middleware(['auth', 'is_active'])->group(function () {
         return view('frontend.after_login.change_password');
     })->name('change_password');
     
-    Route::get('/withdrawal', function () {
-        return view('frontend.after_login.withdrawal');
-    })->name('withdrawal');
+    
 });
 
 Route::get('/',[HomeController::class, 'index'])->name('home');

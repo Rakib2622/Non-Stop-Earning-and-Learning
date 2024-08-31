@@ -59,7 +59,7 @@
                         <h5 class="card-title">{{ $course->title }}</h5> 
 
                         <div class="mt-auto">
-                            <a href="{{ route('user.classes', $course->id) }}" class="btn btn-primary">Enroll</a>
+                            <a href="{{ route('user.classes', $course->id) }}" class="btn btn-primary">Join</a>
                         </div>
                     </div>
                 </div>

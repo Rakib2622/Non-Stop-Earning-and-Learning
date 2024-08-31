@@ -66,7 +66,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <strong>Balance:</strong>
-                                        <p>{{ $user->balance ?? 'N/A' }}</p>
+                                        <p>Tk.{{ number_format($balance, 2) ?? 'N/A' }}</p>
                                     </div>
                                 </div>
                                 <div class="row mb-3">

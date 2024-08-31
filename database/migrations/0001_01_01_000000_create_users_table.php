@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('whatsapp');
             $table->string('reference');
-            $table->string('balance')->nullable();
+            $table->decimal('balance', 10, 2)->default(0);
             $table->string('status')->default('inactive');
             $table->string('image')->nullable();
             $table->string('team_leader_id')->nullable();

@@ -75,7 +75,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('withdrawal') }}">
+                            <a href="{{ route('user.withdrawal.form') }}">
                                 <i class="fa fa-money-bill"></i>
                                 <span data-key="t-withdrawal">Withdrawal</span>
                             </a>

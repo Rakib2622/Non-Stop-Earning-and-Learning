@@ -3,20 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Account;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
 
 class ProfileController extends Controller
 {
-    public function showProfile(): View
-    {
-        $user = auth()->user();
-        return view('frontend.after_login.profile', compact('user'));
-    }
+    
+
+public function showProfile(): View
+{
+    $user = auth()->user();
+        
+    // Fetch the account record for the user
+    $account = Account::where('user_id', $user->id)->first();
+
+    // Calculate balance: If no account record, balance should be 0
+    $balance = $account ? $account->amount : 0;
+
+    return view('frontend.after_login.profile', compact('user', 'balance'));
+}
 
    public function edit(Request $request): View
 {
