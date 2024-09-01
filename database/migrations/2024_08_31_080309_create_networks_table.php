@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
+        Schema::create('networks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->decimal('amount', 10, 2)->nullable();
-            $table->string('description')->nullable();
+            $table->string('reference');
+            $table->integer('user_id');
+            $table->integer('parent_user_id');
             $table->timestamps();
         });
-        
     }
 
     /**
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accounts');
+        Schema::dropIfExists('networks');
     }
 };

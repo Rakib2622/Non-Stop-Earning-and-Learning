@@ -72,8 +72,9 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label for="balance"><strong>Balance:</strong></label>
-                                            <input type="text" class="form-control" name="balance" value="{{ old('balance', $student->balance) }}" >
+                                            <input type="text" class="form-control" name="balance" value="{{ old('balance', $balance) }}" readonly>
                                         </div>
+                                        
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">

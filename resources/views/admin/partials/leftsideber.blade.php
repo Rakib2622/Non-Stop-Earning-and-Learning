@@ -52,6 +52,14 @@
                     </a>
                 </li>
 
+                
+                <li>
+                    <a href="{{ route('admin.withdrawal.request') }}">
+                        <i class="fa fa-wallet"></i>
+                        <span data-key="t-products">Withdrawal Request</span>
+                    </a>
+                </li>
+
                 <li class="dropdown">
                     <a href="#settingsDropdown" aria-expanded="false" data-toggle="collapse">
                         <i class="fa fa-cogs"></i>

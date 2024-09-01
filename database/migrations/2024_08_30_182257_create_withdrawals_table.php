@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('method'); // e.g., bKash, Nogod, etc.
             $table->string('number'); // Payment method number or account number
             $table->string('description')->nullable();
+            $table->enum('status', ['Pending', 'Accepted', 'Rejected']);
             $table->timestamps();
         });
         
