@@ -33,6 +33,16 @@
                 <h2>Registration Form</h2>
                 <p>Provide your necessary information here.</p>
             </div>
+            @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+             @endif
+             @if (session('success'))
+            <div class="alert alert-info">
+                {{ session('success') }}
+            </div>
+             @endif
             <form method="POST" action="{{ route('register') }}">
                 @csrf
 
@@ -79,8 +89,8 @@
                         <input id="email" class="form-control" type="email" name="email" value="{{ old('email') }}" required>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="reference">{{ __('Enter Reference') }}<span class="text-danger">*</span></label>
-                        <input id="reference" class="form-control" type="text" name="reference" value="{{ request()->query('referral') ?? old('reference') }}">
+                        <label for="reference">{{ __('Enter Reference') }}<span class="text-danger"></span></label>
+                        <input id="reference" class="form-control" type="text" name="reference"  value="{{ old('reference', $referral) }}">
                     </div>
                 </div>
 

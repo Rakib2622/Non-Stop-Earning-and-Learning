@@ -5,17 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Withdrawal extends Model
+class Network extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'reference',
         'user_id',
-        'amount',
-        'method',
-        'number',
-        'description',
-        'status',
+        'parent_user_id'
     ];
 }
-

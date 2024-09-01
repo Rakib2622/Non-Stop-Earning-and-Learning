@@ -61,7 +61,7 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <strong>Reference:</strong>
+                                        <strong>Referral Code:</strong>
                                         <p>{{ $user->reference ?? 'N/A' }}</p>
                                     </div>
                                     <div class="col-md-6">
@@ -82,7 +82,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <strong>Referral Link:</strong>
-                                        <p>https://nonstopearning.com/register?referral=00{{ $user->id }}</p>
+                                        <p>http://127.0.0.1:8000/register?referral={{ $user->reference }}</p>
                                     </div>
                                     
                                     <div class="col-md-6">

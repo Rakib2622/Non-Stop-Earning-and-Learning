@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('language');
             $table->string('phone')->nullable();
             $table->string('whatsapp');
-            $table->string('reference');
+            $table->string('reference')->nullable();
             $table->decimal('balance', 10, 2)->default(0);
             $table->string('status')->default('inactive');
             $table->string('image')->nullable();

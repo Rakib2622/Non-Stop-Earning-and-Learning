@@ -39,7 +39,7 @@ Route::middleware(['auth', 'is_active'])->group(function () {
 
 
     Route::post('account/income', [AccountController::class, 'income'])->name('account.income');
-    Route::post('account/deposit', [AccountController::class, 'deposit'])->name('account.deposit');
+    //Route::post('account/deposit', [AccountController::class, 'deposit'])->name('account.deposit');
     Route::get('user/withdrawal', [AccountController::class, 'withdrawalForm'])->name('user.withdrawal.form');
     Route::post('user/withdrawal', [AccountController::class, 'processWithdrawal'])->name('user.withdrawal.process');
 
@@ -203,6 +203,10 @@ Route::prefix('admin')->middleware(['auth:admin', 'role'])->group(function () {
 
     // Orders management route with product_list_access middleware (if orders relate to products)
     Route::get('orders', [ProductController::class, 'order'])->name('admin.orders');
+
+    Route::get('admin/withdrawal', [AccountController::class, 'show_withdrawal_request'])->name('admin.withdrawal.request');
+    Route::post('admin/withdrawal/{id}/update-status', [AccountController::class, 'updateWithdrawalStatus'])->name('admin.withdrawal.update_status');
+
 });
 
 
