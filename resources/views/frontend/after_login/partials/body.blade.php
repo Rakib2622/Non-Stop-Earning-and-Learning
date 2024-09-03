@@ -51,22 +51,27 @@
 
     <div class="row justify-content-center">
         <div class="row">
-            @foreach($courses as $course)
+            @foreach($liveclasses as $liveclass)
             <div class="col-md-4 mb-4">
-                <div class="card h-70 shadow-sm">
-                    <img src="{{ asset('assets1\images\auth-bg.jpg') }}" class="card-img-top" alt="Course Image">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ $course->title }}</h5> 
-
-                        <div class="mt-auto">
-                            <a href="{{ route('user.classes', $course->id) }}" class="btn btn-primary">Join</a>
+                <div class="card h-100 text-center shadow-sm p-4" style="border-radius: 10px; background-color: #f4f7fc;">
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <!-- Meeting Icon -->
+                        <div class="meeting-icon" style="font-size: 50px; color: #00C9FF;">
+                            &#128187;
                         </div>
+    
+                        <!-- Title -->
+                        <h5 class="card-title mt-3">{{ $liveclass->title }}</h5>
+    
+                        <!-- Join Button -->
+                        <a href="{{ $liveclass->url }}" class="btn btn-primary mt-3" style="background: linear-gradient(90deg, #00C9FF 0%, #feb892 100%); border: none; border-radius: 50px; padding: 10px 20px;">Join Class</a>
                     </div>
                 </div>
             </div>
             @endforeach
         </div>
     </div>
+    
 </div>
 
 <style>

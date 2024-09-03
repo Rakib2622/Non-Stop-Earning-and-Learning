@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\SelecteduserController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LiveClassController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserProductController;
 use App\Http\Controllers\ProfileController;
@@ -190,6 +191,14 @@ Route::prefix('admin')->middleware(['auth:admin', 'role'])->group(function () {
         Route::put('courses/{course_id}/classes/{class_id}', [CourseController::class, 'update_class'])->name('admin.class.update');
         Route::delete('courses/{course_id}/classes/{class_id}', [CourseController::class, 'delete_class'])->name('admin.class.delete');
     
+
+        Route::get('live-classes', [LiveClassController::class, 'index'])->name('admin.liveclasses');
+        Route::get('live-classes/create', [LiveClassController::class, 'create'])->name('admin.liveclass.create');
+        Route::post('live-classes', [LiveClassController::class, 'store'])->name('admin.liveclass.store');
+        Route::get('live-classes/{id}/edit', [LiveClassController::class, 'edit'])->name('admin.liveclass.edit');
+        Route::put('live-classes/{id}', [LiveClassController::class, 'update'])->name('admin.liveclass.update');
+        Route::delete('live-classes/{id}', [LiveClassController::class, 'destroy'])->name('admin.liveclass.delete');
+
 
     // Product management routes with product_list_access middleware
     

@@ -39,6 +39,13 @@
                 </li>
 
                 <li>
+                    <a href="{{ route('admin.liveclasses') }}">
+                        <i class="fa fa-pen"></i>
+                        <span data-key="t-course">Class</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="{{ route('admin.products') }}">
                         <i class="fa fa-box"></i>
                         <span data-key="t-products">Products</span>

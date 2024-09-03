@@ -20,8 +20,6 @@
                     </a>
                 </li>
 
-
-
                 <li>
                     <a href="{{ route('user.products') }}">
                         <i class="fa fa-box"></i>

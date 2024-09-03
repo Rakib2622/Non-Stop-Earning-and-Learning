@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\ClassModel;
+use App\Models\LiveClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,8 +14,8 @@ class CourseController extends Controller
     public function index()
     {
         
-        $courses = Course::all();
-        return view('frontend.after_login.dashboard', compact('courses'));
+        $liveclasses = LiveClass::all();
+        return view('frontend.after_login.dashboard', compact('liveclasses'));
     }
     // Courses List
     public function courselist()
