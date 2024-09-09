@@ -101,14 +101,25 @@ public function update_role_page(Request $request, $id)
     return redirect()->route('admin.roles')->with('success', 'Role updated successfully.');
 }
 
-    public function delete($id)
-    {
-        
-        $role = Selected_role::findOrFail($id);
-        $role->delete();
+public function delete($id)
+{
+    // Find the role by id
+    $role = Selected_role::findOrFail($id);
 
-        return redirect()->route('admin.roles')->with('success', 'Role deleted successfully.');
+    // Check if any admin user is associated with this role
+    $adminCount = Admin::where('selected_role_id', $id)->count();
+
+    // If admin users exist for this role, show a message and prevent deletion
+    if ($adminCount > 0) {
+        return redirect()->route('admin.roles')->with('error', 'Role cannot be deleted as there are admin users assigned to this role.');
     }
+
+    // If no admin users exist, delete the role
+    $role->delete();
+
+    return redirect()->route('admin.roles')->with('success', 'Role deleted successfully.');
+}
+
 
 
     //user

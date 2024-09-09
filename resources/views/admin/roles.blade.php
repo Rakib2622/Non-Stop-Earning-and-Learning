@@ -55,10 +55,17 @@
                                                     Delete
                                                 </button>
                                             </form>
+                                            
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
+                            <!-- Display error message -->
+                            @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
                         </table>
                     </div>
                 </div>
@@ -67,5 +74,7 @@
         <!-- Main Content End -->
     </div>
 </div>
+
+
 
 @include('admin.partials.footer')

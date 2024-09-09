@@ -67,9 +67,7 @@
                             </div>
                         </form>
                     </div>
-
                     <div class="d-flex">
-
                         <div class="dropdown d-inline-block d-lg-none ms-2">
                             <button type="button" class="btn header-item" id="page-header-search-dropdown"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
